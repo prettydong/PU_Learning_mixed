@@ -1,3 +1,7 @@
+"""
+function should be attributes pulabels and other hyper parameters
+"""
+
 import numpy
 import pandas as pd
 from sklearn.naive_bayes import GaussianNB
@@ -36,13 +40,11 @@ def two_step_GNB(attributes, ground_truth_labels, pu_labels, max_iteration):
     gnb = GaussianNB()
     gnb.fit(attributes, pu_labels)
     pred = gnb.predict(attributes)
-
     for i in range(max_iteration):
         pred_increase = pu_labels + pred
         pred_increase = pd.Series([1 if i > 0 else 0 for i in pred_increase])
         gnb.fit(attributes, pred_increase)
         pred = gnb.predict(attributes)
-
     return pred
 
 
