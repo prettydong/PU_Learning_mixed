@@ -16,12 +16,13 @@ def pd_read_csv(path):
     return attributes, grand_truth_labels
 
 
-def SCAR_select_fn(gtl,random_seed):
-    random.Random().seed(random_seed)
+def SCAR_select_fn(gtl,my_random):
     pi = 0.5
     ret = 0
+    a = my_random.random()
+    # print(a)
     if gtl == 1:
-        if random.Random().random() > pi:
+        if a > pi:
             ret = gtl
     return ret
 
@@ -40,8 +41,10 @@ def from_pn2pu(attributes, grand_truth_labels, select_function,rs):
     PU_labels
     """
     PU_labels = []
+    my_random = random.Random()
+    my_random.seed(rs)
     for i in range(len(attributes)):
-        PU_labels.append(select_function(grand_truth_labels[i],rs))
+        PU_labels.append(select_function(grand_truth_labels[i],my_random))
     PU_labels = pd.Series(PU_labels)
     return PU_labels
 
