@@ -12,7 +12,7 @@ def get_data():
     digits = datasets.load_digits(n_class=6)
     data = digits.data
     label = digits.target
-    n_samples, n_features = data.shape
+
     return data, label
 
 
