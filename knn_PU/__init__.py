@@ -12,7 +12,6 @@ from sklearn.metrics import f1_score, accuracy_score
 
 def knn_PU(attributes, pu_labels, k, T):
     """
-
     :param attributes:
     :param pu_labels:
     :param k:
