@@ -12,6 +12,7 @@ from sklearn.metrics import f1_score, accuracy_score
 def GNB_PN(attributes, ground_truth_labels):
     gnb = GaussianNB()
     gnb.fit(attributes, ground_truth_labels)
+
     return gnb.predict(attributes)
 
 
@@ -50,11 +51,14 @@ def two_step_GNB(attributes, ground_truth_labels, pu_labels, max_iteration):
 
 
 if __name__ == '__main__':
-    a, gtl, pul = get_PU_dataset('heart',random_seed = 1)
-    a = (a-a.mean())/a.std()
+    a, gtl, pul = get_PU_dataset('digits',random_seed = 2)
+    # print(gtl,pul)
+    gtl1 = gtl.sum()
+    pul1 = pul.sum()
+    print(gtl1,pul1)
     result_GNB_PU = numpy.array([accuracy_score(GNB_PU(a, pul), gtl) for i in range(100)])
-    result_GNB_PN = numpy.array([accuracy_score(GNB_PU(a, gtl), gtl) for i in range(100)])
-    result_GNB_PU2S = numpy.array([accuracy_score(two_step_GNB(a, gtl, pul, 1000), gtl) for i in range(10)])
-    print("result_GNB_PN:" + str(result_GNB_PN.mean()))
-    print("result_GNB_PU:" + str(result_GNB_PU.mean()))
-    print("result_GNB_PU2S:" + str(result_GNB_PU2S.mean()))
+    result_GNB_PN = numpy.array([accuracy_score(GNB_PN(a, gtl), gtl) for i in range(100)])
+    result_GNB_PU2S = numpy.array([accuracy_score(two_step_GNB(a, gtl, pul, 4), gtl) for i in range(10)])
+    print("result_GNB_PN:acy" + str(result_GNB_PN.mean()))
+    print("result_GNB_PU:acy" + str(result_GNB_PU.mean()))
+    print("result_GNB_PU2S:acy" + str(result_GNB_PU2S.mean()))

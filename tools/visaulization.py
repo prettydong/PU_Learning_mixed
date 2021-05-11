@@ -24,7 +24,7 @@ def plot_embedding(data, label, title):
     ax = plt.subplot(111)
     for i in range(data.shape[0]):
         plt.text(data[i, 0], data[i, 1], str(label[i]),
-                 color='r' if label[i] == 0 else 'b',
+                 color='r',
                  fontdict={'weight': 'bold', 'size': 9})
     plt.xticks([])
     plt.yticks([])
@@ -48,5 +48,6 @@ def show_data_tSNE(data, label, normalize=False):
 
 
 if __name__ == '__main__':
-    data, label, w = get_PU_dataset('heart', random_seed=1)
+    # data, label, w = get_PU_dataset('heart', random_seed=1)
+    data,label = get_data()
     show_data_tSNE(data,label)

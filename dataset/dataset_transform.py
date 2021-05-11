@@ -50,20 +50,26 @@ def from_pn2pu(attributes, grand_truth_labels, select_function, rs):
     return PU_labels
 
 
-def get_PU_dataset(dataset_name, random_seed):
+
+def get_PU_dataset(dataset_name, random_seed=1):
+    """
+    :param dataset_name:
+    :param random_seed:
+    :return:
+    should input a PN dataset
+    """
     if dataset_name == 'heart':
         a, gtl = pd_read_csv("../dataset/heart/heart.csv")
         pul = from_pn2pu(a, gtl, SCAR_select_fn, random_seed)
         return a, gtl, pul
-
-
-def get_dataset(dataset_name):
     if dataset_name == 'digits':
-        f = open('sk_digits/digits.pkl', 'rb')
-        data, labels = pickle.load(f)[0], pickle.load(f)[1]
+        f = open("../dataset/sk_digits/digitsPN.pkl",'rb')
+        data , labels = pickle.load(f)
         f.close()
-        return data, labels
-
+        a = pd.DataFrame(data)
+        gtl = pd.Series(labels)
+        pul = from_pn2pu(a, gtl, SCAR_select_fn, random_seed)
+        return a, gtl, pul
 
 if __name__ == '__main__':
-    get_PU_dataset('heart')
+    get_PU_dataset('digits')

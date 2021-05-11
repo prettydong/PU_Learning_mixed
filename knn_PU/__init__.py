@@ -32,6 +32,7 @@ def knn_PU(attributes, pu_labels, k, T):
     u_idx_list = pu_labels[pu_labels != 1].index
 
     pseudo_p_idx_list = []
+    q = 0
     for u_idx in u_idx_list:
         # print(u_idx)
         ui = attributes.iloc[u_idx]
@@ -39,22 +40,24 @@ def knn_PU(attributes, pu_labels, k, T):
         for p_idx in p_idx_list:
             pi = attributes.iloc[p_idx]
             # print(ui,pi)
-            cos_similar = np.dot(ui, pi) / (np.linalg.norm(ui) * (np.linalg.norm(pi)))
+            cos_similar = np.dot(ui, pi) / ((np.linalg.norm(ui) * (np.linalg.norm(pi)))+0.0001)
             sim_list.append(cos_similar)
         sim_list = sorted(sim_list, reverse=True)
         sum_sim = 0
         for i in range(k):
             sum_sim = sum_sim + sim_list[i]
-        # print(sum_sim)
+
         if sum_sim > T:
             pseudo_p_idx_list.append(u_idx)
             u_idx_list.drop(u_idx)
+            q += 1
+    print(q)
     # print(pseudo_p_idx_list)
     return pseudo_p_idx_list
 
 
 if __name__ == '__main__':
-    a, gtl, pul = get_PU_dataset('heart', random_seed=2)
+    a, gtl, pul = get_PU_dataset('digits', random_seed=1)
     pseudo_p = knn_PU(a, pul, 5, 3.5)
     pseudo_p = pd.Series([1 if i in pseudo_p else 0 for i in range(len(gtl))])
     pred = pul + pseudo_p
