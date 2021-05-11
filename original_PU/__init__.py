@@ -38,6 +38,7 @@ def two_step_GNB(attributes, ground_truth_labels, pu_labels, max_iteration):
     """
 
     gnb = GaussianNB()
+
     gnb.fit(attributes, pu_labels)
     pred = gnb.predict(attributes)
     for i in range(max_iteration):
@@ -50,9 +51,10 @@ def two_step_GNB(attributes, ground_truth_labels, pu_labels, max_iteration):
 
 if __name__ == '__main__':
     a, gtl, pul = get_PU_dataset('heart',random_seed = 1)
+    a = (a-a.mean())/a.std()
     result_GNB_PU = numpy.array([accuracy_score(GNB_PU(a, pul), gtl) for i in range(100)])
     result_GNB_PN = numpy.array([accuracy_score(GNB_PU(a, gtl), gtl) for i in range(100)])
-    result_GNB_PU2S = numpy.array([accuracy_score(two_step_GNB(a, gtl, pul, 1000), gtl) for i in range(100)])
+    result_GNB_PU2S = numpy.array([accuracy_score(two_step_GNB(a, gtl, pul, 1000), gtl) for i in range(10)])
     print("result_GNB_PN:" + str(result_GNB_PN.mean()))
     print("result_GNB_PU:" + str(result_GNB_PU.mean()))
     print("result_GNB_PU2S:" + str(result_GNB_PU2S.mean()))
